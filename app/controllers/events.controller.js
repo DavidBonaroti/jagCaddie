@@ -189,13 +189,58 @@ function showHandicap(req, res) {
       res.send('Events not Found');
     }
 
-    var data = 0;
+    //loop through scores to calculate handicap differential
 
-    for (var i = 0; i < events.length; i++) {
-      data += events[i].score;
+    let scores = [];
+
+    for (let i = 0; i < events.length; i++) {
+      let result = 0;
+      result += events[i].score;
+      result -= events[i].rating;
+      result *= 113;
+      result = (result / (events[i].slope));
+      scores.push(result);
     }
-    
 
+    //select lowest handicap differential
+    //5-10 rounds, lowest differential x .96
+    //11-19 rounds, avg lowest 3-5 differentials x .96
+    //>=20 rounds, avg lowest 10 differentials x .96
+    let data = 0;
+    if (scores.length < 10) {
+
+      data = Math.min.apply(null, scores);
+      data *= .93;
+      data = Math.round(data);
+
+    } else if (scores.length >= 10 && scores.length <= 19) {
+
+      let lowestThree = scores.sort(function(a, b) {
+        return a-b;
+      }).slice(0, 3);
+      let sumThree = 0;
+      for (let j = 0; j < lowestThree.length; j++ ) {
+        sumThree += lowestThree[j];
+      }
+      data = sumThree / lowestThree.length;
+      data *= .93;
+      data = Math.round(data);
+      return data;
+
+    } else if (scores.length > 19) {
+
+      let lowestTen = scores.sort(function(a, b) {
+        return a-b;
+      }).slice(0, 10);
+      let sumTen = 0;
+      for (let k = 0; k < lowestTen.length; k++ ) {
+        sumTen += lowestTen[k];
+      }
+      data = sumTen / lowestTen.length;
+      data *= .93;
+      data = Math.round(data);
+
+    }
     // return a view with data
     res.render('pages/handicap', {
       data: data
