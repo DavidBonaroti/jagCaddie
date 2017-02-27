@@ -11,6 +11,13 @@
     <tr>
       <th>Event Name</th>
       <th>Description</th>
+      <th>Date</th>
+      <th>Course</th>
+      <th>Slope</th>
+      <th>Rating</th>
+      <th>Score</th>
+      <th>Front</th>
+      <th>Back</th>
       <th></th>
     </tr>
   </thead>
@@ -21,6 +28,13 @@
       <tr>
         <td><%= event.name %></td>
         <td><%= event.description %></td>
+        <td><%= event.createdAt %></td>
+        <td><%= event.course %></td>
+        <td><%= event.slope %></td>
+        <td><%= event.rating %></td>
+        <td><%= event.score %></td>
+        <td><%= event.front %></td>
+        <td><%= event.back %></td>
         <td>
           <a href="/events/<%= event.slug %>" class="btn btn-sm btn-primary">View</a>
           <a href="/events/<%= event.slug %>/edit" class="btn btn-sm btn-primary">Edit</a>

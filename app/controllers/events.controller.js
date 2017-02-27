@@ -9,7 +9,8 @@ module.exports = {
   processCreate: processCreate,
   showEdit: showEdit,
   processEdit: processEdit,
-  deleteEvent: deleteEvent
+  deleteEvent: deleteEvent,
+  showHandicap: showHandicap
 }
 
 //show events
@@ -82,6 +83,12 @@ function processCreate(req, res) {
   //validate info
   req.checkBody('name', 'Name is required.').notEmpty();
   req.checkBody('description', 'Description is also required.').notEmpty();
+  req.checkBody('course', 'Course is also required.').notEmpty();
+  req.checkBody('slope', 'Slope is also required.').notEmpty();
+  req.checkBody('rating', 'Rating is also required.').notEmpty();
+  req.checkBody('score', 'Score is also required.').notEmpty();
+  req.checkBody('front', 'Front is also required.').notEmpty();
+  req.checkBody('front', 'Front is also required.').notEmpty();
 
   //if errors, redirect and save errors to flash
   const errors = req.validationErrors();
@@ -93,7 +100,13 @@ function processCreate(req, res) {
   //create new event
   const event = new Event({
     name: req.body.name,
-    description: req.body.description
+    description: req.body.description,
+    course: req.body.course,
+    slope: req.body.slope,
+    rating: req.body.rating,
+    score: req.body.score,
+    front: req.body.front,
+    back: req.body.back
   });
 
   // save event
@@ -141,6 +154,7 @@ function processEdit(req, res) {
     event.name = req.body.name;
     event.description = req.body.description;
 
+
   //error in update
     event.save((err) => {
       if(err)
@@ -155,12 +169,36 @@ function processEdit(req, res) {
 
 
 
-// delete evenet
+// delete event
 function deleteEvent(req, res) {
   Event.remove({ slug: req.params.slug }, (err) => {
     //set flash data
     //redirect back to events page
     req.flash('success', 'Event deleted!');
     res.redirect('/events');
+  });
+}
+
+
+//calculate score
+function showHandicap(req, res) {
+  //get all events
+  Event.find({}, (err, events) => {
+    if(err) {
+      res.status(404);
+      res.send('Events not Found');
+    }
+
+    var data = 0;
+
+    for (var i = 0; i < events.length; i++) {
+      data += events[i].score;
+    }
+    
+
+    // return a view with data
+    res.render('pages/handicap', {
+      data: data
+    });
   });
 }

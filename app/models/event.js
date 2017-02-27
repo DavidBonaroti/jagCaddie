@@ -9,7 +9,17 @@ const eventSchema = new Schema({
     type: String,
     unique: true
   },
-  description: String
+  description: String,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  course: String,
+  slope: Number,
+  rating: Number,
+  score: Number,
+  front: Number,
+  back: Number
 });
 
 // middleware

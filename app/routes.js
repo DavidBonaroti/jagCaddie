@@ -31,3 +31,6 @@ router.get('/events/:slug/delete', eventsController.deleteEvent);
 
 // show single event
 router.get('/events/:slug', eventsController.showSingle);
+
+// show handicap score
+router.get('/handicap', eventsController.showHandicap);
