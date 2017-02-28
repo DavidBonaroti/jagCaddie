@@ -24,21 +24,21 @@
 
   <tbody>
 
-    <% for (var event of events) { %>
+    <% for (var i = 0; i < events.length; i++) { %>
       <tr>
-        <td><%= event.name %></td>
-        <td><%= event.description %></td>
-        <td><%= event.createdAt %></td>
-        <td><%= event.course %></td>
-        <td><%= event.slope %></td>
-        <td><%= event.rating %></td>
-        <td><%= event.score %></td>
-        <td><%= event.front %></td>
-        <td><%= event.back %></td>
+        <td><%= events[i].name %></td>
+        <td><%= events[i].description %></td>
+        <td><%= dates[i] %></td>
+        <td><%= events[i].course %></td>
+        <td><%= events[i].slope %></td>
+        <td><%= events[i].rating %></td>
+        <td><%= events[i].score %></td>
+        <td><%= events[i].front %></td>
+        <td><%= events[i].back %></td>
         <td>
-          <a href="/events/<%= event.slug %>" class="btn btn-sm btn-primary">View</a>
-          <a href="/events/<%= event.slug %>/edit" class="btn btn-sm btn-primary">Edit</a>
-          <a href="/events/<%= event.slug %>/delete" class="btn btn-sm btn-danger">Delete</a>
+          <a href="/events/<%= events[i].slug %>" class="btn btn-sm btn-primary">View</a>
+          <a href="/events/<%= events[i].slug %>/edit" class="btn btn-sm btn-primary">Edit</a>
+          <a href="/events/<%= events[i].slug %>/delete" class="btn btn-sm btn-danger">Delete</a>
         </td>
       </tr>
     <% } %>

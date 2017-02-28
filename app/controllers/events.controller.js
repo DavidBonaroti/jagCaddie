@@ -22,9 +22,22 @@ function showEvents(req, res) {
       res.send('Events not Found');
     }
 
+    //convert date format from MongoDB format to UI format
+    let dates = [];
+
+    for (i = 0; i < events.length; i++) {
+      let dateString = events[i].createdAt;
+      let date = new Date(dateString);
+
+      let formattedDate = date.toDateString();
+
+      dates.push(formattedDate);
+    };
+
     // return a view with data
     res.render('pages/events', {
       events: events,
+      dates: dates,
       success: req.flash('success')
     });
   });
@@ -202,17 +215,18 @@ function showHandicap(req, res) {
       scores.push(result);
     }
 
-    //select lowest handicap differential
+    //application selects lowest handicap differential based on no. of rounds
     //5-10 rounds, lowest differential x .96
     //11-19 rounds, avg lowest 3-5 differentials x .96
     //>=20 rounds, avg lowest 10 differentials x .96
     let data = 0;
+    //5-10
     if (scores.length < 10) {
 
       data = Math.min.apply(null, scores);
       data *= .93;
       data = Math.round(data);
-
+    //11-19
     } else if (scores.length >= 10 && scores.length <= 19) {
 
       let lowestThree = scores.sort(function(a, b) {
@@ -226,7 +240,7 @@ function showHandicap(req, res) {
       data *= .93;
       data = Math.round(data);
       return data;
-
+    //20+
     } else if (scores.length > 19) {
 
       let lowestTen = scores.sort(function(a, b) {
